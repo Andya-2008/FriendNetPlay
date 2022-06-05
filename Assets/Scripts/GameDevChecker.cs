@@ -17,15 +17,15 @@ public class GameDevChecker : MonoBehaviour
         {
             DevCanvas.GetComponent<Canvas>().enabled = true;
             PlayerCanvas.GetComponent<Canvas>().enabled = false;
-            DevCamera.GetComponent<Camera>().enabled = true;
-            PlayerCamera.GetComponent<Camera>().enabled = false;
+            DevCamera.SetActive(true);
+            PlayerCamera.SetActive(false);
         }
         else
         {
             PlayerCanvas.GetComponent<Canvas>().enabled = true;
             DevCanvas.GetComponent<Canvas>().enabled = false; 
-            PlayerCamera.GetComponent<Camera>().enabled = true;
-            DevCamera.GetComponent<Camera>().enabled = false;
+            PlayerCamera.SetActive(true);
+            DevCamera.SetActive(false);
 
         }
         

@@ -16,63 +16,68 @@ public class CloseClaw : MonoBehaviour
     [SerializeField] GameObject Ball;
     public bool dontTime;
     public bool ClawButton;
+    public float lastClawChangeTime;
+    
     // Start is called before the first frame update
     void Start()
     {
         startTime = Time.time;
+        lastClawChangeTime = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Delete this later
-        
-        if (ClawButton && ClawStallBool1 && ClawStallBool2)
-        {
-            dontTime = false;
-            startTime = Time.time;
-            ClawOpenBool = true;
-            ClawStallBool1 = false;
-            ClawStallBool2 = false;
 
-        }
-        else if (ClawButton || ClawClosingBool)
-        {
-            ClawClosingBool = true;
-            ClawGrab();
-        }
-        if (ClawStallBool1&&ClawStallBool2)
-        {
-            dontTime = true;
-            if (Time.time - startTime >= .5f)
-            {
-                Ball.transform.parent = GameObject.Find("BallAttached").transform;
-                Ball.GetComponent<Rigidbody2D>().isKinematic = true;
-                Ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-                ClawClosingBool = false;
-                ClawOpenBool = false;
-            }
-            else
+        //if lastClawChangeTime is within 1 second, then don't do anything.
+        // ClawStallBool1 is when the left side is touching the ball.  ClawStallBool2 is when right side is touching the ball.
+        
+            //This is when the claw has the ball.
+            if ((ClawButton || Input.GetKey(KeyCode.Space)) && ClawStallBool1 && ClawStallBool2)
             {
                 ClawOpenBool = true;
                 ClawStallBool1 = false;
                 ClawStallBool2 = false;
-            }
-        }
-        if(Claw1.transform.localRotation.eulerAngles.z > 300 && ClawOpenBool)
-        {
-            Ball.transform.parent = GameObject.Find("FreeBall").transform;
-            Ball.GetComponent<Rigidbody2D>().isKinematic = false;
-            Ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
-            ClawClosingBool = false;
-            ClawOpen();
-        }
-        else if (Claw1.transform.localRotation.eulerAngles.z <= 300)
-        {
-            ClawOpenBool = false;
-        }
-        
+            }
+            else if ((ClawButton || Input.GetKey(KeyCode.Space)) || ClawClosingBool)
+            {
+                ClawClosingBool = true;
+                ClawGrab();
+            }
+
+
+            if (ClawStallBool1 && ClawStallBool2 && ClawClosingBool)
+            {
+                    Ball.transform.parent = GameObject.Find("BallAttached").transform;
+                    Ball.GetComponent<Rigidbody2D>().isKinematic = true;
+                    Ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                    ClawClosingBool = false;
+                    ClawOpenBool = false;
+            }
+
+
+            // If ClawOpenBool is true and the claws have not opened all the way, then the jaws open.
+            if (Claw1.transform.localRotation.eulerAngles.z > 300 && ClawOpenBool)
+            {
+                ClawOpen();
+                ClawClosingBool = false;
+            if (Time.time - lastClawChangeTime > .5)
+            {
+                lastClawChangeTime = Time.time;
+                Vector2 vel = Ball.GetComponent<Rigidbody2D>().velocity;
+                Ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+                Ball.GetComponent<Rigidbody2D>().isKinematic = false;
+                Ball.transform.parent = GameObject.Find("FreeBall").transform;
+                //Debug.Log(vel);
+                Ball.GetComponent<Rigidbody2D>().velocity = vel;
+            }
+            }
+            // this happens after the claw opens all the way.
+            else if (Claw1.transform.localRotation.eulerAngles.z <= 300)
+            {
+                ClawOpenBool = false;
+            }
 
     }
 

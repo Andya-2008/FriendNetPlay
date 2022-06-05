@@ -17,16 +17,15 @@ public class StopClaw : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time - startTime >= .2f && !FullClaw.GetComponent<CloseClaw>().dontTime)
+        /*if (Time.time - startTime >= .2f && !FullClaw.GetComponent<CloseClaw>().dontTime)
         {
             startTime = Time.time;
             GameObject.Find("Claw").GetComponent<CloseClaw>().ClawStallBool2 = false;
             GameObject.Find("Claw").GetComponent<CloseClaw>().ClawStallBool1 = false;
-        }
+        }*/
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
         if (!GameObject.Find("Claw").GetComponent<CloseClaw>().ClawOpenBool)
         {
             if (collision.gameObject.tag == "Ball")

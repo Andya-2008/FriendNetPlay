@@ -13,6 +13,8 @@ public class LevelManager : MonoBehaviour
     int RandomLevel4Pos;
     float startTime;
     bool levelPosSwitchBool;
+    bool alreadySet;
+    bool alreadyTimeSet;
 
     private void Start()
     {
@@ -20,12 +22,17 @@ public class LevelManager : MonoBehaviour
     }
     public void NextLevel()
     {
+        alreadySet = false;
         levelNum += 1;
+        if (levelNum >= 11)
+        {
+            GameObject.Find("GameOverManager").GetComponent<GameOverManager>().GameOverInitiate();
+        }
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             NextLevel();
         }
@@ -121,8 +128,113 @@ public class LevelManager : MonoBehaviour
         }
         if (levelNum == 7)
         {
-            Hoop.GetComponent<HoopMover>().DirRight = 15;
-            Hoop.GetComponent<HoopMover>().DirUp = 15;
+            if (!alreadySet)
+            {
+                alreadySet = true;
+                Hoop.GetComponent<HoopMover>().DirRight *= 4;
+                Hoop.GetComponent<HoopMover>().DirUp *= 4;
+            }
+        }
+        if (levelNum == 8)
+        {
+            if (!alreadySet)
+            {
+                alreadySet = true;
+                Hoop.GetComponent<HoopMover>().DirRight *= 2;
+                Hoop.GetComponent<HoopMover>().DirUp *= 2;
+            } 
+        }
+        if (levelNum == 9)
+        {
+            if(Time.time - startTime >= 3)
+            {
+                alreadyTimeSet = true;
+            }
+            if (alreadyTimeSet)
+            {
+                alreadyTimeSet = false;
+                if (RandomLevel4Pos == 0)
+                {
+                    RandomLevel4Pos = Random.Range(1, 4);
+                    startTime = Time.time;
+                    levelPosSwitchBool = true;
+                    Hoop.transform.position = Level1HoopPos.position;
+                }
+                if (RandomLevel4Pos == 1)
+                {
+                    RandomLevel4Pos = Random.Range(0, 4);
+                    startTime = Time.time;
+                    levelPosSwitchBool = false;
+                    Hoop.transform.position = Level2HoopPos.position;
+                }
+                if (RandomLevel4Pos == 2)
+                {
+                    RandomLevel4Pos = Random.Range(0, 4);
+                    startTime = Time.time;
+                    levelPosSwitchBool = true;
+                    Hoop.transform.position = Level4HoopPos.position;
+                }
+                if (RandomLevel4Pos == 3)
+                {
+                    RandomLevel4Pos = Random.Range(0, 3);
+                    startTime = Time.time;
+                    levelPosSwitchBool = false;
+                    Hoop.transform.position = Level4HoopPos2.position;
+                }
+            }
+            if (!alreadySet)
+            {
+                
+                alreadySet = true;
+                Hoop.GetComponent<HoopMover>().DirRight *= 2;
+                Hoop.GetComponent<HoopMover>().DirUp *= 2;
+            }
+        }
+        if (levelNum == 10)
+        {
+            if (Time.time - startTime >= 1.5)
+            {
+                alreadyTimeSet = true;
+            }
+            if (alreadyTimeSet)
+            {
+                alreadyTimeSet = false;
+                if (RandomLevel4Pos == 0)
+                {
+                    RandomLevel4Pos = Random.Range(1, 4);
+                    startTime = Time.time;
+                    levelPosSwitchBool = true;
+                    Hoop.transform.position = Level1HoopPos.position;
+                }
+                if (RandomLevel4Pos == 1)
+                {
+                    RandomLevel4Pos = Random.Range(0, 4);
+                    startTime = Time.time;
+                    levelPosSwitchBool = false;
+                    Hoop.transform.position = Level2HoopPos.position;
+                }
+                if (RandomLevel4Pos == 2)
+                {
+                    RandomLevel4Pos = Random.Range(0, 4);
+                    startTime = Time.time;
+                    levelPosSwitchBool = true;
+                    Hoop.transform.position = Level4HoopPos.position;
+                }
+                if (RandomLevel4Pos == 3)
+                {
+                    RandomLevel4Pos = Random.Range(0, 3);
+                    startTime = Time.time;
+                    levelPosSwitchBool = false;
+                    Hoop.transform.position = Level4HoopPos2.position;
+                }
+            }
+            if (!alreadySet)
+            {
+
+                alreadySet = true;
+                Hoop.GetComponent<HoopMover>().DirRight *= 2;
+                Hoop.GetComponent<HoopMover>().DirUp *= 2;
+            }
         }
     }
 }

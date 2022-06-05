@@ -16,11 +16,11 @@ public class RobotMoverScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(moveLeft)
+        if(moveLeft || Input.GetKey(KeyCode.A))
         {
             MoveLeft();
         }
-        if (moveRight)
+        if (moveRight || Input.GetKey(KeyCode.D))
         {
             MoveRight();
         }
@@ -28,10 +28,12 @@ public class RobotMoverScript : MonoBehaviour
 
     void MoveRight()
     {
+        if(this.transform.position.x <= 7.34)
         this.transform.Translate(moveSpeed/100*Time.deltaTime, 0, 0);
     }
     void MoveLeft()
     {
-        this.transform.Translate(-1*moveSpeed/100 * Time.deltaTime, 0, 0);
+        if (this.transform.position.x >= -7.34)
+            this.transform.Translate(-1*moveSpeed/100 * Time.deltaTime, 0, 0);
     }
 }

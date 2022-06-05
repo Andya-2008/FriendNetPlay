@@ -7,7 +7,8 @@ using Photon.Pun;
 using Photon.Pun.Demo.Asteroids;
 public class LobbyMainPanel : MonoBehaviourPunCallbacks
 {
-    bool alreadySetHost;
+    [SerializeField] Canvas thisCanvas;
+    public bool alreadySetHost;
     [SerializeField] Button hostButton;
     public string hostName;
     [SerializeField] GameObject hostText;
@@ -46,10 +47,10 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
     private Dictionary<string, RoomInfo> cachedRoomList;
     private Dictionary<string, GameObject> roomListEntries;
     private Dictionary<int, GameObject> playerListEntries;
-    private bool alreadyJoined = false;
+    public bool alreadyJoined = false;
 
     #region UNITY
-
+    
     public void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -64,36 +65,42 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
     #region PUN CALLBACKS
     private void Update()
     {
-    if (PhotonNetwork.CurrentRoom.PlayerCount >= 2)
+        if (PhotonNetwork.CurrentRoom != null)
         {
-            Debug.Log(PhotonNetwork.PlayerList);
-            if (PhotonNetwork.PlayerList[1] == PhotonNetwork.LocalPlayer && !alreadySetHost)
+            if (PhotonNetwork.CurrentRoom.PlayerCount >= 2)
             {
+                if (PhotonNetwork.PlayerList[1] == PhotonNetwork.LocalPlayer && !alreadySetHost)
+                {
                     alreadySetHost = true;
-                PlayerPrefs.SetString("PlayerType", "Host");
-            }
+                    PlayerPrefs.SetString("PlayerType", "Host");
+                }
 
                 hostText.SetActive(true);
-            Debug.Log(PlayerPrefs.GetString("PlayerType"));
-    }
-    else
-    {
-        hostText.SetActive(false);
-    }
+            }
+            else
+            {
+                hostText.SetActive(false);
+            }
 
-    if(PhotonNetwork.CountOfPlayers==2)
-    {
-            hostButton.gameObject.SetActive(true);
-    }
+            if (PhotonNetwork.CountOfPlayers == 2)
+            {
+                hostButton.gameObject.SetActive(true);
+            }
+        }
     }
 
     public override void OnConnectedToMaster()
     {
         this.SetActivePanel(SelectionPanel.name);
-        if(PhotonNetwork.LocalPlayer.NickName != "ComputerHost" && !alreadyJoined)
+        if (PhotonNetwork.LocalPlayer.NickName != "ComputerHost1719137765" && !alreadyJoined)
         {
             alreadyJoined = true;
             OnJoinRandomRoomButtonClicked();
+        }
+        else if (PhotonNetwork.LocalPlayer.NickName == "ComputerHost1719137765" && !alreadyJoined)
+        {
+            alreadyJoined = true;
+            OnDevJoinRandomRoomButtonClicked();
         }
     }
 
@@ -131,12 +138,17 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
+        /*
         string roomName = "Room " + Random.Range(1000, 10000);
 
         RoomOptions options = new RoomOptions {MaxPlayers = 8};
 
         PhotonNetwork.CreateRoom(roomName, options, null);
-    }
+    */
+        Debug.Log("OnJoinRandomFailed");
+        alreadyJoined = false;
+        PhotonNetwork.Disconnect();
+        }
 
     public override void OnJoinedRoom()
     {
@@ -175,7 +187,6 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
                 playerListEntries.Add(p.ActorNumber, entry);
             }
                 
-            Debug.Log(hostName);
         }
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
 
@@ -277,12 +288,21 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
     public void OnJoinRandomRoomButtonClicked()
     {
-            
         SetActivePanel(JoinRandomRoomPanel.name);
 
         PhotonNetwork.JoinRandomRoom();
+        
+    }
+    public void OnDevJoinRandomRoomButtonClicked()
+    {
+        SetActivePanel(InsideRoomPanel.name);
+        GameObject.Find("OrigCanvas").GetComponent<Canvas>().enabled = false;
+        thisCanvas.GetComponent<Canvas>().enabled = true;
+        string roomName = "Room " + Random.Range(1000, 10000);
 
-        Debug.Log("Random Room Joined");
+        RoomOptions options = new RoomOptions { MaxPlayers = 8 };
+
+        PhotonNetwork.CreateRoom(roomName, options, null);
     }
 
     public void OnLeaveGameButtonClicked()
@@ -292,39 +312,35 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
     public void OnLoginButtonClicked()
     {
-        devCheck = false;
-        PlayerPrefs.SetString("PlayerType", "Player");
-
         string playerName = PlayerNameInput.text;
-
-        if (!playerName.Equals(""))
+        if (playerName == "devname6767")
         {
-            PhotonNetwork.LocalPlayer.NickName = playerName;
-            PhotonNetwork.ConnectUsingSettings();
-                
+            OnDevLoginButtonClicked();
         }
         else
         {
-            Debug.LogError("Player Name is invalid.");
+            devCheck = false;
+            PlayerPrefs.SetString("PlayerType", "Player");
+
+            if (!playerName.Equals(""))
+            {
+                PhotonNetwork.LocalPlayer.NickName = playerName;
+                PhotonNetwork.ConnectUsingSettings();
+
+            }
+            else
+            {
+                Debug.LogError("Player Name is invalid.");
+            }
         }
-        Debug.Log(PlayerPrefs.GetString("Dev"));
     }
     public void OnDevLoginButtonClicked()
     {
         devCheck = true;
         string playerName = "ComputerHost1719137765";
         PlayerPrefs.SetString("PlayerType", "Dev");
-
-        if (!playerName.Equals(""))
-        {
-            PhotonNetwork.LocalPlayer.NickName = playerName;
-            PhotonNetwork.ConnectUsingSettings();
-        }
-        else
-        {
-            Debug.LogError("Player Name is invalid.");
-        }
-        Debug.Log(PlayerPrefs.GetString("PlayerType"));
+        PhotonNetwork.LocalPlayer.NickName = playerName;
+        PhotonNetwork.ConnectUsingSettings();
     }
 
     public void OnRoomListButtonClicked()

@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class LoadAllGames : MonoBehaviour
 {
+    PhotonView photonView;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        photonView = PhotonView.Get(this);
     }
 
     // Update is called once per frame
@@ -20,14 +22,17 @@ public class LoadAllGames : MonoBehaviour
 
     public void ButtonLoadGame()
     {
-        PhotonView photonView = PhotonView.Get(this);
         photonView.RPC("LoadGame", RpcTarget.All);
     }
 
     [PunRPC]
     void LoadGame()
     {
-        PhotonNetwork.LoadLevel("Clawooperation");
+        GameObject.Find("MainPanel").GetComponent<LobbyMainPanel>().alreadySetHost = false;
+        GameObject.Find("MainPanel").GetComponent<LobbyMainPanel>().alreadyJoined = false;
+        SceneManager.LoadScene("Clawooperation");
+        //PhotonNetwork.LoadLevel("Clawooperation");
+
     }
     
 }

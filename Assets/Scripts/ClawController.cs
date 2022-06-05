@@ -13,11 +13,14 @@ public class ClawController : MonoBehaviour
     void Start()
     {
         photonView = this.GetComponent<PhotonView>();
+        CenterButton.GetComponent<MyButton>().controllerType = "ClawController";
+        CenterButton.GetComponent<MyButton>().buttonType = "Button";
     }
 
     // Update is called once per frame
     void Update()
     {
+        /*
         if (CenterButton.GetComponent<MyButton>().buttonPressed)
         {
             ClawButton();
@@ -26,6 +29,7 @@ public class ClawController : MonoBehaviour
         {
             ClawButtonRelease();
         }
+        */
     }
 
     private void ClawButtonRelease()

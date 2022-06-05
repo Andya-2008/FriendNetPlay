@@ -26,8 +26,7 @@ public class PivotAndExtend : MonoBehaviour
     {
         if (pivotPlayer == 1)
         {
-            //Fix rotation NOW
-            if (rotateLeft)
+            if (rotateLeft || Input.GetKey(KeyCode.R))
             {
                 if ((this.transform.rotation.eulerAngles.z >= 300))
                 {
@@ -38,7 +37,7 @@ public class PivotAndExtend : MonoBehaviour
                     RawPivot("Left");
                 }
             }
-            if (rotateRight)
+            if (rotateRight || Input.GetKey(KeyCode.T))
             {
                 if ((this.transform.rotation.eulerAngles.z <= 360 && this.transform.rotation.eulerAngles.z >= 295))
                 {
@@ -53,7 +52,7 @@ public class PivotAndExtend : MonoBehaviour
         }
         if (pivotPlayer == 2)
         {
-            if (rotateLeft)
+            if (rotateLeft || Input.GetKey(KeyCode.F))
             {
                 if ((this.transform.localRotation.eulerAngles.z >= 330))
                 {
@@ -64,7 +63,7 @@ public class PivotAndExtend : MonoBehaviour
                     RawPivot("Left");
                 }
             }
-            if (rotateRight)
+            if (rotateRight || Input.GetKey(KeyCode.G))
             {
                 
                 if ((this.transform.localRotation.eulerAngles.z <= 360 && this.transform.localRotation.eulerAngles.z >= 325))
@@ -88,12 +87,12 @@ public class PivotAndExtend : MonoBehaviour
         }*/
         if (pivotPlayer == 2)
         {
-            if (extendDown && ScaleSquare.transform.position.y >= -.4)
+            if ((extendDown || Input.GetKey(KeyCode.S)) && ScaleSquare.transform.localPosition.y >= -2.5)
             {
                 RawExtend();
                 PivotP2.transform.position += transform.up * -1 * scaleSpeed / 20*Time.deltaTime;
             }
-            else if(contractUp && ScaleSquare.transform.position.y <= 1)
+            else if((contractUp || Input.GetKey(KeyCode.W)) && ScaleSquare.transform.localPosition.y <= -.5)
             {
                 RawContract();
                 PivotP2.transform.position += transform.up * scaleSpeed / 20*Time.deltaTime;

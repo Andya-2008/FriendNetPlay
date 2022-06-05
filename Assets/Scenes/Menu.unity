@@ -2704,7 +2704,7 @@ RectTransform:
   - {fileID: 1295560784}
   - {fileID: 1699152400}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3710,6 +3710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fd812a67908014cb408f749ca7a55e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thisCanvas: {fileID: 1510274658}
   hostButton: {fileID: 110205432}
   hostName: 
   hostText: {fileID: 892223757}
@@ -5865,18 +5866,6 @@ MonoBehaviour:
           m_StringArgument: DemoWorker
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1295560788}
-        m_TargetAssemblyTypeName: ButtonStop, Assembly-CSharp
-        m_MethodName: StopButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1295560786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6624,7 +6613,7 @@ RectTransform:
   - {fileID: 1253712148}
   - {fileID: 892223758}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -7389,7 +7378,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1793089057
 RectTransform:
   m_ObjectHideFlags: 0

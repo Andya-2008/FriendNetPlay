@@ -26,18 +26,18 @@ public class BounceCollider : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (Time.time - startTime > .1)
+        if (Time.time - startTime > .3)
         {
             if (collision.gameObject != InsideHoopCollider && collision.gameObject != InsideHoopCollider1 && collision.gameObject != InsideHoopCollider2 && collision.gameObject != InsideHoopCollider3)
             {
-                Debug.Log(collision.gameObject.name);
                 if (collider1 || collider2)
                 {
-                    GameObject.Find("Hoop").GetComponent<HoopMover>().DirRight *= -1;
+                    
+                    GameObject.Find("Hoop").GetComponent<HoopMover>().DirUp *= -1;
                 }
                 if (collider3 || collider4)
                 {
-                    GameObject.Find("Hoop").GetComponent<HoopMover>().DirUp *= -1;
+                    GameObject.Find("Hoop").GetComponent<HoopMover>().DirRight *= -1;
                 }
             }
         }
