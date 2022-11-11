@@ -22,15 +22,23 @@ public class ActuateRobot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (translateLeft) {
+        if (translateLeft || Input.GetKey(KeyCode.A)) {
             TranslateLeft();
         }
-        if (translateRight)
+        if (translateRight || Input.GetKey(KeyCode.D))
         {
             TranslateRight();
         }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            GameObject.Find("Claw").GetComponent<CloseClaw>().ClawButton = true;
+        }
+        else
+        {
+            GameObject.Find("Claw").GetComponent<CloseClaw>().ClawButton = false;
+        }
     }
-
+    
     public void buttonDown(string controllerType, string buttonType)
     {
         photonView.RPC("buttonDownRPC", RpcTarget.MasterClient, controllerType, buttonType);

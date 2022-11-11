@@ -24,6 +24,21 @@ public class MoverController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.A))
+        {
+            MoveLeft();
+        }
+        else {
+            MoveLeftDisabled();
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            MoveRight();
+        }
+        else
+        {
+            MoveRightDisabled();
+        }
         /*
         if (ButtonLeft.GetComponent<MyButton>().buttonPressed)
         {
@@ -45,7 +60,7 @@ public class MoverController : MonoBehaviour
         */
     }
 
-    public void MoveLeft(int buttonTypeId)
+    public void MoveLeft()
     {
         photonView.RPC("Move", RpcTarget.MasterClient, "Left", true);
     }

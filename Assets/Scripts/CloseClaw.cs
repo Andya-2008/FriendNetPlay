@@ -12,6 +12,7 @@ public class CloseClaw : MonoBehaviour
     public bool ClawOpenBool;
     public bool ClawStallBool1;
     public bool ClawStallBool2;
+    public bool BallInPlace=false;
     [SerializeField] float moveSpeed;
     [SerializeField] GameObject Ball;
     public bool dontTime;
@@ -33,28 +34,30 @@ public class CloseClaw : MonoBehaviour
         // ClawStallBool1 is when the left side is touching the ball.  ClawStallBool2 is when right side is touching the ball.
         
             //This is when the claw has the ball.
-            if ((ClawButton || Input.GetKey(KeyCode.Space)) && ClawStallBool1 && ClawStallBool2)
+            if (ClawButton && ClawStallBool1 && ClawStallBool2)
             {
                 ClawOpenBool = true;
                 ClawStallBool1 = false;
                 ClawStallBool2 = false;
 
             }
-            else if ((ClawButton || Input.GetKey(KeyCode.Space)) || ClawClosingBool)
+            else if (ClawButton || ClawClosingBool)
             {
                 ClawClosingBool = true;
                 ClawGrab();
             }
 
 
-            if (ClawStallBool1 && ClawStallBool2 && ClawClosingBool)
-            {
-                    Ball.transform.parent = GameObject.Find("BallAttached").transform;
-                    Ball.GetComponent<Rigidbody2D>().isKinematic = true;
-                    Ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-                    ClawClosingBool = false;
-                    ClawOpenBool = false;
-            }
+        if (ClawStallBool1 && ClawStallBool2 && ClawClosingBool && BallInPlace)
+        {
+            
+                Ball.transform.parent = GameObject.Find("BallAttached").transform;
+                Ball.GetComponent<Rigidbody2D>().isKinematic = true;
+                Ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                ClawClosingBool = false;
+                ClawOpenBool = false;
+            
+        }
 
 
             // If ClawOpenBool is true and the claws have not opened all the way, then the jaws open.

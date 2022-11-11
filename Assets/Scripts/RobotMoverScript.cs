@@ -14,13 +14,13 @@ public class RobotMoverScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if(moveLeft || Input.GetKey(KeyCode.A))
+        if(moveLeft )
         {
             MoveLeft();
         }
-        if (moveRight || Input.GetKey(KeyCode.D))
+        if (moveRight )
         {
             MoveRight();
         }

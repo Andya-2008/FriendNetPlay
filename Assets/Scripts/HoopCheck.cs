@@ -31,10 +31,13 @@ public class HoopCheck : MonoBehaviour
             {
                 if (canMoveLeft && canMoveRight)
                 {
-                    startTime = Time.time;
-                    GameObject.Find("LevelManager").GetComponent<LevelManager>().NextLevel();
-                    GameObject.Find("ScoreManager").GetComponent<ScoreManager>().levelCount += 1;
-                    ConfettiEffect.Play();
+                    if (!GameObject.Find("Claw").GetComponent<CloseClaw>().ClawStallBool1 && !GameObject.Find("Claw").GetComponent<CloseClaw>().ClawStallBool2)
+                    {
+                        startTime = Time.time;
+                        GameObject.Find("LevelManager").GetComponent<LevelManager>().NextLevel();
+                        GameObject.Find("ScoreManager").GetComponent<ScoreManager>().levelCount += 1;
+                        ConfettiEffect.Play();
+                    }
                 }
             }
         }
