@@ -86,12 +86,12 @@ public class CloseClaw : MonoBehaviour
 
     private void ClawGrab()
     {
-        Claw1.transform.Rotate(0, 0, moveSpeed);
-        Claw2.transform.Rotate(0, 0, -1*moveSpeed);
+        Claw1.transform.Rotate(0, 0, moveSpeed * Time.deltaTime * 100);
+        Claw2.transform.Rotate(0, 0, -1*moveSpeed*Time.deltaTime*100);
     }
     public void ClawOpen()
     {
-        Claw1.transform.Rotate(0, 0, -1*moveSpeed);
-        Claw2.transform.Rotate(0, 0, moveSpeed);
+        Claw1.transform.Rotate(0, 0, -1*moveSpeed*Time.deltaTime*100);
+        Claw2.transform.Rotate(0, 0, moveSpeed*Time.deltaTime*100);
     }
 }
