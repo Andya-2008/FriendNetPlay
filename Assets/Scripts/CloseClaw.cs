@@ -27,7 +27,7 @@ public class CloseClaw : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
         //if lastClawChangeTime is within 1 second, then don't do anything.

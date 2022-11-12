@@ -13,10 +13,12 @@ public class PivotController1 : MonoBehaviour
     void Start()
     {
         photonView = this.GetComponent<PhotonView>();
+        /*
         ButtonLeft.GetComponent<MyButton>().controllerType = "PivotController1";
         ButtonLeft.GetComponent<MyButton>().buttonType = "ButtonLeft";
         ButtonRight.GetComponent<MyButton>().controllerType = "PivotController1";
         ButtonRight.GetComponent<MyButton>().buttonType = "ButtonRight";
+        */
     }
 
     // Update is called once per frame

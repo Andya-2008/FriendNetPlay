@@ -20,7 +20,7 @@ public class ActuateRobot : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (translateLeft || Input.GetKey(KeyCode.A)) {
             TranslateLeft();
@@ -39,127 +39,53 @@ public class ActuateRobot : MonoBehaviour
         }
     }
     
-    public void buttonDown(string controllerType, string buttonType)
+    public void buttonDown(string cmd)
     {
-        photonView.RPC("buttonDownRPC", RpcTarget.MasterClient, controllerType, buttonType);
+        photonView.RPC("buttonRPC", RpcTarget.MasterClient, cmd, true);
     }
 
 
-    public void buttonUp(string controllerType, string buttonType)
+    public void buttonUp(string cmd)
     {
-        photonView.RPC("buttonUpRPC", RpcTarget.MasterClient, controllerType, buttonType);
+        photonView.RPC("buttonRPC", RpcTarget.MasterClient, cmd, false);
     }
 
 
     [PunRPC]
-    public void buttonDownRPC(string controllerType, string buttonType)
+    public void buttonRPC(string cmd, bool blCmd)
     {
         autoDisconnect.autoStartTime = Time.time;
-        if (controllerType == "MoverController")
-        {
-            if (buttonType == "ButtonRight")
-            {
-                translateRight = true;
-            }
-            if (buttonType == "ButtonLeft")
-            {
-                translateLeft = true;
-            }
-        }
-        if (controllerType == "ClawController")
-        {
-            if (buttonType == "Button")
-            {
-                GameObject.Find("Claw").GetComponent<CloseClaw>().ClawButton = true;
-            }
-        }
-        if(controllerType == "PivotController1")
-        {
-            if(buttonType == "ButtonRight")
-            {
-                GameObject.Find("Pivot1").GetComponent<PivotAndExtend>().rotateRight = true;
-            }
-            if (buttonType == "ButtonLeft")
-            {
-                GameObject.Find("Pivot1").GetComponent<PivotAndExtend>().rotateLeft = true;
-            }
-        }    
-        if(controllerType == "PivotController2")
-        {
-            if (buttonType == "ButtonRight")
-            {
-                GameObject.Find("Pivot2").GetComponent<PivotAndExtend>().rotateRight = true;
-            }
-            if (buttonType == "ButtonLeft")
-            {
-                GameObject.Find("Pivot2").GetComponent<PivotAndExtend>().rotateLeft = true;
-            }
-            if (buttonType == "ButtonUp")
-            {
-                GameObject.Find("Pivot2").GetComponent<PivotAndExtend>().contractUp = true;
-            }
-            if (buttonType == "ButtonDown")
-            {
-                GameObject.Find("Pivot2").GetComponent<PivotAndExtend>().extendDown = true;
-            }
+        switch (cmd) {
+            case "Right":
+                translateRight = blCmd;
+                break;
+            case "Left":
+                translateLeft = blCmd;
+                break;
+            case "Claw":
+                GameObject.Find("Claw").GetComponent<CloseClaw>().ClawButton = blCmd;
+                break;
+            case "RightHinge1":
+                GameObject.Find("Pivot1").GetComponent<PivotAndExtend>().rotateRight = blCmd;
+                break;
+            case "LeftHinge1":
+                GameObject.Find("Pivot1").GetComponent<PivotAndExtend>().rotateLeft = blCmd;
+                break;
+            case "RightHinge2":
+                GameObject.Find("Pivot2").GetComponent<PivotAndExtend>().rotateRight = blCmd;
+                break;
+            case "LeftHinge2":
+                GameObject.Find("Pivot2").GetComponent<PivotAndExtend>().rotateLeft = blCmd;
+                break;
+            case "Up":
+                GameObject.Find("Pivot2").GetComponent<PivotAndExtend>().contractUp = blCmd;
+                break;
+            case "Down":
+                GameObject.Find("Pivot2").GetComponent<PivotAndExtend>().extendDown = blCmd;
+                break;
         }
     }
 
-    [PunRPC]
-    public void buttonUpRPC(string controllerType, string buttonType)
-    {
-        autoDisconnect.autoStartTime = Time.time;
-        if (controllerType == "MoverController")
-        {
-            if (buttonType == "ButtonRight")
-            {
-                translateRight = false;
-            }
-            if (buttonType == "ButtonLeft")
-            {
-                translateLeft = false;
-            }
-        }
-        if (controllerType == "ClawController")
-        {
-            if (buttonType == "Button")
-            {
-                GameObject.Find("Claw").GetComponent<CloseClaw>().ClawButton = false;
-            }
-        }
-        if (controllerType == "PivotController1")
-        {
-            if (buttonType == "ButtonRight")
-            {
-                GameObject.Find("Pivot1").GetComponent<PivotAndExtend>().rotateRight = false;
-            }
-            if (buttonType == "ButtonLeft")
-            {
-                GameObject.Find("Pivot1").GetComponent<PivotAndExtend>().rotateLeft = false;
-            }
-        }
-        if (controllerType == "PivotController2")
-        {
-            if (buttonType == "ButtonRight")
-            {
-                GameObject.Find("Pivot2").GetComponent<PivotAndExtend>().rotateRight = false;
-            }
-            if (buttonType == "ButtonLeft")
-            {
-                GameObject.Find("Pivot2").GetComponent<PivotAndExtend>().rotateLeft = false;
-            }
-            if (buttonType == "ButtonUp")
-            {
-                GameObject.Find("Pivot2").GetComponent<PivotAndExtend>().contractUp = false;
-            }
-            if (buttonType == "ButtonDown")
-            {
-                GameObject.Find("Pivot2").GetComponent<PivotAndExtend>().extendDown = false;
-            }
-        }
-
-
-    }
 
 
     void TranslateRight()

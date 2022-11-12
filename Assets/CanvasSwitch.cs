@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class CanvasSwitch : MonoBehaviour
 {
-    [SerializeField] GameObject ClawCanvas;
-    [SerializeField] GameObject PivotCanvas1;
-    [SerializeField] GameObject PivotCanvas2;
-    [SerializeField] GameObject MoverCanvas;
+
+    [SerializeField] GameObject btnLeft;
+    [SerializeField] GameObject btnRight;
+    [SerializeField] GameObject btnUp;
+    [SerializeField] GameObject btnDown;
+    [SerializeField] GameObject btnLeftHinge1;
+    [SerializeField] GameObject btnRightHinge1;
+    [SerializeField] GameObject btnLeftHinge2;
+    [SerializeField] GameObject btnRightHinge2;
+    [SerializeField] GameObject btnClaw;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +23,7 @@ public class CanvasSwitch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if(Input.GetKeyDown(KeyCode.U))
         {
             MoverCanvas.GetComponent<Canvas>().enabled = true;
@@ -45,5 +52,6 @@ public class CanvasSwitch : MonoBehaviour
             PivotCanvas2.GetComponent<Canvas>().enabled = false;
             ClawCanvas.GetComponent<Canvas>().enabled = true;
         }
+        */
     }
 }

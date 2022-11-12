@@ -15,10 +15,12 @@ public class MoverController : MonoBehaviour
     void Start()
     {
         photonView = this.GetComponent<PhotonView>();
+        /*
         ButtonLeft.GetComponent<MyButton>().controllerType = "MoverController";
         ButtonLeft.GetComponent<MyButton>().buttonType = "ButtonLeft";
         ButtonRight.GetComponent<MyButton>().controllerType = "MoverController";
         ButtonRight.GetComponent<MyButton>().buttonType = "ButtonRight";
+        */
     }
 
     // Update is called once per frame
