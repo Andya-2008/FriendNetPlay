@@ -3106,7 +3106,7 @@ namespace Photon.Pun
             {
                 SetLevelInPropsIfSynced(levelName);
             }
-
+            Debug.Log(levelName);
             PhotonNetwork.IsMessageQueueRunning = false;
             loadingLevelAndPausedNetwork = true;
             _AsyncLevelLoadingOperation = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Single);

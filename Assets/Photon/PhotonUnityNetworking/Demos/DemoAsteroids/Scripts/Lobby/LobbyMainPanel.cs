@@ -10,8 +10,14 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
     [SerializeField] Canvas thisCanvas;
     public bool alreadySetHost;
     [SerializeField] Button hostButton;
+
+    [SerializeField] Button createButton;
+    [SerializeField] Button joinButton;
+
     public string hostName;
     [SerializeField] GameObject hostText;
+    [SerializeField] GameObject roomNameText;
+
     [SerializeField] GameObject origCanvas;
     [SerializeField]Canvas ConnectedCanvas;
     public bool devCheck;
@@ -19,6 +25,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
     public GameObject LoginPanel;
 
     public InputField PlayerNameInput;
+    public InputField RoomNameInput;
 
     [Header("Selection Panel")]
     public GameObject SelectionPanel;
@@ -63,8 +70,23 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
     #endregion
     #region PUN CALLBACKS
+
+    private void Start()
+    {
+        PhotonNetwork.ConnectUsingSettings();
+        RoomNameInput.text = "World " + Random.Range(1000, 9999);
+
+    }
+
+
+
     private void Update()
     {
+
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            PlayerPrefs.SetString("PlayerType", "Player");
+        }
         if (PhotonNetwork.CurrentRoom != null)
         {
             if (PhotonNetwork.CurrentRoom.PlayerCount >= 2)
@@ -82,7 +104,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
                 hostText.SetActive(false);
             }
 
-            if (PhotonNetwork.CountOfPlayers == 2)
+            if (PhotonNetwork.CountOfPlayers > 2)
             {
                 hostButton.gameObject.SetActive(true);
             }
@@ -91,21 +113,14 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        this.SetActivePanel(SelectionPanel.name);
-        if (PhotonNetwork.LocalPlayer.NickName != "ComputerHost1719137765" && !alreadyJoined)
-        {
-            alreadyJoined = true;
-            OnJoinRandomRoomButtonClicked();
-        }
-        else if (PhotonNetwork.LocalPlayer.NickName == "ComputerHost1719137765" && !alreadyJoined)
-        {
-            alreadyJoined = true;
-            OnDevJoinRandomRoomButtonClicked();
-        }
+        Debug.Log("Connected!");
+        createButton.interactable = true;
+        PhotonNetwork.JoinLobby();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        Debug.Log("Room List Updated:" + Time.time);
         ClearRoomListView();
 
         UpdateCachedRoomList(roomList);
@@ -117,6 +132,8 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
         // whenever this joins a new lobby, clear any previous room lists
         cachedRoomList.Clear();
         ClearRoomListView();
+        Debug.Log("Joined Lobby");
+        
     }
 
     // note: when a client joins / creates a room, OnLeftLobby does not get called, even if the client was in a lobby before
@@ -154,10 +171,10 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
     {
             
             // joining (or entering) a room invalidates any cached lobby room list (even if LeaveLobby was not called due to just joining a room)
-            cachedRoomList.Clear();
-
-            
-            SetActivePanel(InsideRoomPanel.name);
+        cachedRoomList.Clear();
+        SetActivePanel(InsideRoomPanel.name);
+        Debug.Log(PhotonNetwork.CurrentRoom.Name);
+        roomNameText.GetComponent<Text>().text = PhotonNetwork.CurrentRoom.Name;
         if (!devCheck)
         {
             ConnectedCanvas.GetComponent<Canvas>().enabled = true;
@@ -212,6 +229,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
+        Debug.Log("PlayerEnteredRoom");
         GameObject entry = Instantiate(PlayerListEntryPrefab);
         entry.transform.SetParent(InsideRoomPanel.transform);
         entry.transform.localScale = Vector3.one;
@@ -274,20 +292,23 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
     public void OnCreateRoomButtonClicked()
     {
-        string roomName = RoomNameInputField.text;
+        SetActivePanel(InsideRoomPanel.name);
+        devCheck = true;
+        GameObject.Find("OrigCanvas").GetComponent<Canvas>().enabled = false;
+        thisCanvas.GetComponent<Canvas>().enabled = true;
+        string roomName = RoomNameInput.text;
         roomName = (roomName.Equals(string.Empty)) ? "Room " + Random.Range(1000, 10000) : roomName;
-
-        byte maxPlayers;
-        byte.TryParse(MaxPlayersInputField.text, out maxPlayers);
-        maxPlayers = (byte) Mathf.Clamp(maxPlayers, 2, 8);
-
-        RoomOptions options = new RoomOptions {MaxPlayers = maxPlayers, PlayerTtl = 10000 };
-
+        PhotonNetwork.LocalPlayer.NickName = PlayerNameInput.text;
+        RoomOptions options = new RoomOptions { MaxPlayers = 8};
+        
+        PlayerPrefs.SetString("PlayerType", "Dev");
+        
         PhotonNetwork.CreateRoom(roomName, options, null);
     }
 
     public void OnJoinRandomRoomButtonClicked()
     {
+        Debug.Log("OnJoinRandomRoom");
         SetActivePanel(JoinRandomRoomPanel.name);
 
         PhotonNetwork.JoinRandomRoom();
@@ -450,7 +471,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
             entry.transform.SetParent(RoomListContent.transform);
             entry.transform.localScale = Vector3.one;
             entry.GetComponent<RoomListEntry>().Initialize(info.Name, (byte)info.PlayerCount, info.MaxPlayers);
-
+            Debug.Log("Add Room to View:" + info.Name);
             roomListEntries.Add(info.Name, entry);
         }
     }
