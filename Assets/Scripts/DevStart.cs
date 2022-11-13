@@ -12,6 +12,7 @@ public class DevStart : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        /*
         PhotonNetwork.Disconnect();
         if (PlayerPrefs.GetString("PlayerType") == "Dev")
         {
@@ -30,12 +31,13 @@ public class DevStart : MonoBehaviour
             {
                 Debug.LogError("2");
                 PlayerPrefs.SetString("AlreadyPlayedGame", "true");
-            }*/
+            }
         }
         else
         {
             PlayerPrefs.SetString("PlayerType", "Player");
         }
+        */
     }
     
     void Update()

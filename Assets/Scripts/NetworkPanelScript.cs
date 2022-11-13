@@ -44,18 +44,14 @@ public class NetworkPanelScript : MonoBehaviourPunCallbacks
 
 
     private Dictionary<int, GameObject> playerListEntries;
-
-    private bool devCheck;
     public string hostName;
 
-    private float lastUpdate;
 
 
     // Start is called before the first frame update
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
-        lastUpdate = 0;
     }
 
 
@@ -142,7 +138,7 @@ public class NetworkPanelScript : MonoBehaviourPunCallbacks
         GameObject entry = Instantiate(PlayerListEntryPrefab);
         entry.transform.SetParent(InsideRoomPanel.transform);
         entry.transform.localScale = Vector3.one;
-        entry.GetComponent<PlayerListEntry>().Initialize(newPlayer.ActorNumber, newPlayer.NickName);
+        //entry.GetComponent<PlayerListEntry>().Initialize(newPlayer.ActorNumber, newPlayer.NickName);
 
         playerListEntries.Add(newPlayer.ActorNumber, entry);
         
@@ -164,15 +160,13 @@ public class NetworkPanelScript : MonoBehaviourPunCallbacks
     public void OnCreateRoomButtonClicked()
     {
         Debug.Log("CreateRoomButtonClicked");
-        devCheck = true;
         //GameObject.Find("OrigCanvas").GetComponent<Canvas>().enabled = false;
         //thisCanvas.GetComponent<Canvas>().enabled = true;
         string roomName = Random.Range(1000, 10000).ToString();
         PhotonNetwork.LocalPlayer.NickName = "Host Screen";
         RoomOptions options = new RoomOptions { MaxPlayers = 8 };
-
-        PlayerPrefs.SetString("PlayerType", "Dev");
-
+        PlayerPrefs.SetString("RoomCode", roomName);
+        PlayerPrefs.SetString("PlayerType", "Host");
         PhotonNetwork.CreateRoom(roomName, options, null);
     }
 
@@ -181,7 +175,6 @@ public class NetworkPanelScript : MonoBehaviourPunCallbacks
         Debug.Log("JoinRoomButtonClicked");
         //SetActivePanel(JoinRoomPanel.name);
         string playerName = PlayerNameInput.text;
-        PlayerPrefs.SetString("PlayerType", "Player");
         if (!playerName.Equals(""))
         {
             Debug.Log("Join Room:" + ddRoomList.options[ddRoomList.value].text);

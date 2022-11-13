@@ -31,7 +31,7 @@ public class HoopCheck : MonoBehaviour
             {
                 if (canMoveLeft && canMoveRight)
                 {
-                    if (!GameObject.Find("Claw").GetComponent<CloseClaw>().ClawStallBool1 && !GameObject.Find("Claw").GetComponent<CloseClaw>().ClawStallBool2)
+                    if (!GameObject.Find("Claw").GetComponent<CloseClaw>().holdingBall)
                     {
                         startTime = Time.time;
                         GameObject.Find("LevelManager").GetComponent<LevelManager>().NextLevel();

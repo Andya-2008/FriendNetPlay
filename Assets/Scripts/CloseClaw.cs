@@ -18,6 +18,7 @@ public class CloseClaw : MonoBehaviour
     public bool dontTime;
     public bool ClawButton;
     public float lastClawChangeTime;
+    public bool holdingBall;
     
     // Start is called before the first frame update
     void Start()
@@ -56,7 +57,7 @@ public class CloseClaw : MonoBehaviour
                 Ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
                 ClawClosingBool = false;
                 ClawOpenBool = false;
-            
+                holdingBall = true;
         }
 
 
@@ -74,6 +75,7 @@ public class CloseClaw : MonoBehaviour
                 Ball.transform.parent = GameObject.Find("FreeBall").transform;
                 //Debug.Log(vel);
                 Ball.GetComponent<Rigidbody2D>().velocity = vel;
+                holdingBall = false;
             }
             }
             // this happens after the claw opens all the way.

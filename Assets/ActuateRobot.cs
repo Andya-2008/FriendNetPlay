@@ -54,7 +54,6 @@ public class ActuateRobot : MonoBehaviour
     [PunRPC]
     public void buttonRPC(string cmd, bool blCmd)
     {
-        autoDisconnect.autoStartTime = Time.time;
         switch (cmd) {
             case "Right":
                 translateRight = blCmd;
