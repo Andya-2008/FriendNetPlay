@@ -19,6 +19,7 @@ public class StopClawFromNet : MonoBehaviour
     {
         
     }
+    /*
     private void OnTriggerEnter2D(Collider2D collision)
     { 
         if (collision.gameObject == clawColliderLeft || collision.gameObject == clawColliderRight)
@@ -48,4 +49,5 @@ public class StopClawFromNet : MonoBehaviour
             }
         }
     }
+    */
 }
